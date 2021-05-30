@@ -5,7 +5,7 @@ import './index.css';
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
-      {props.value}
+      {props.letter}
     </button>
   );
 }
@@ -14,7 +14,7 @@ class Board extends React.Component {
   renderSquare(i) {
     return (
       <Square
-        value={this.props.squares[i]}
+        letter={this.props.squares[i]}
 	onClick={() => this.props.onClick(i)}
       />
     );
@@ -49,6 +49,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+	lastLocation: null,
       }],
       stepNumber: 0,
       xIsNext: true,
@@ -66,6 +67,7 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares: squares,
+        lastLocation: i,
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -86,7 +88,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-	'Go to move #' + move :
+	'Go to move #' + move + ' at ' + history[move].lastLocation:
 	'Go to game start';
       return (
 	<li key={move}>
@@ -95,11 +97,11 @@ class Game extends React.Component {
       );
     });
 
-    let xyz;
+    let status;
     if (winner) {
-      xyz = 'Winner: ' + winner;
+      status = 'Winner: ' + winner;
     } else {
-      xyz = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
     return (
@@ -111,7 +113,7 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{xyz}</div>
+          <div>{status}</div>
           <ol>{moves}</ol>
         </div>
       </div>
