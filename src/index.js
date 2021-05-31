@@ -31,7 +31,7 @@ class Board extends React.Component {
   createBoard() {
     let board=[]
     for (let j = 0; j < 3; j++) {
-      board.push(<div>
+      board.push(<div className="board-row">
         {this.createRow(j*3)}
       </div>)
     }
