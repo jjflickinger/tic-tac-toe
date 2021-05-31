@@ -20,19 +20,19 @@ class Board extends React.Component {
     );
   }
 
-  createRow(start) {
+  createRow(start, numRows) {
     let row=[]
-    for (let j = start; j < (start+3); j++) {
+    for (let j = start; j < (start+numRows); j++) {
       row.push(this.createSquare(j))
     }
     return row;
   }
 
-  createBoard() {
+  createBoard(numRows) {
     let board=[]
-    for (let j = 0; j < 3; j++) {
+    for (let j = 0; j < numRows; j++) {
       board.push(<div className="board-row">
-        {this.createRow(j*3)}
+        {this.createRow(j*numRows, numRows)}
       </div>)
     }
     return board;
@@ -41,7 +41,7 @@ class Board extends React.Component {
   render() {
     return (
       <div>
-        {this.createBoard()}
+        {this.createBoard(3)}
       </div>
     );
   }
@@ -88,7 +88,7 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winner = calculateWinner(current.squares, 3);
 
     const moves = history.map((step, move) => {
       const desc = move ?
@@ -132,17 +132,41 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+function calculateWinner(squares, numRows) {
+  var lines = [];
+
+  //calculate horizontal row wins
+  for (let k = 0; k < numRows; k++) {
+    let combo = [];
+    for (let j = k*numRows; j < (k*numRows + numRows); j++) {
+      combo.push(j);
+    }
+    lines.push(combo);
+  }
+
+  //calculate vertical column wins
+  for (let k=0; k < numRows; k++) {
+    let combo = [];
+    for (let j = k; j < numRows*numRows; j += numRows) {
+      combo.push(j);
+    }
+    lines.push(combo);
+  }
+
+  //calculate diagonal wins
+  let diagonal1 = [];
+  for ( let k=0; k < (numRows*numRows); k += (numRows + 1) ) {
+    diagonal1.push(k);
+  }
+  lines.push(diagonal1);
+
+  let diagonal2 = [];
+  for ( let k=(numRows - 1); k < (numRows*numRows); k +=(numRows - 1) ) {
+    diagonal2.push(k);
+  }
+  lines.push(diagonal2);
+
+  //check for winner
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
