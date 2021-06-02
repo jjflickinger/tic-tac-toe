@@ -77,18 +77,16 @@ class MoveList extends React.Component {
   }
 }
 
-class ToggleButton extends React.Component {
-  render() {
-    const ascending = this.props.ascending;
-    const ascdesc = ascending ? "Sort descending" : "Sort ascending";
-    return (
-      <button
-	onClick={() => this.props.handleToggle()}
-      >
+function ToggleButton(props) {
+  const ascending = props.ascending;
+  const ascdesc = ascending ? "Sort descending" : "Sort ascending";
+  return (
+    <button
+      onClick={props.handleToggle}
+    >
       {ascdesc}
-      </button>
-    );
-  }
+    </button>
+  );
 }
 
 class Game extends React.Component {
