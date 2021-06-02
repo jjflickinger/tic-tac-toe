@@ -87,6 +87,16 @@ function ToggleButton(props) {
   );
 }
 
+function StatusBar(props) {
+  let status;
+  if (props.winner) {
+    status = 'Winner: ' + props.winner;
+  } else {
+    status = 'Next player: ' + (props.xIsNext ? 'X' : 'O');
+  }
+  return (<div>{status}</div>);
+}
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -144,24 +154,20 @@ class Game extends React.Component {
     const numRows = Number.parseInt(this.props.numRows, 10);
     const winner = calculateWinner(current.squares, numRows);
 
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
-
     return (
       <div className="game">
         <div className="game-board">
           <Board
-	    numRows = {numRows}
+	    numRows={numRows}
 	    squares={current.squares}
 	    onClick={(i) => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <StatusBar
+	    winner={winner}
+	    xIsNext={this.state.xIsNext}
+          />
 	</div>
         <div className="move-list">
 	  <MoveList
