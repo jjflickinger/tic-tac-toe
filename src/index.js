@@ -28,7 +28,6 @@ class Board extends React.Component {
     return row;
   }
 
-
   createBoard(numRows) {
     let board=[];
     for (let j = 0; j < numRows; j++) {
@@ -59,7 +58,10 @@ class MoveList extends React.Component {
       'Go to game start';
     return (
       <li key={move}>
-        <button onClick={() => this.props.jumpTo(move)}>{desc}</button>
+        <button
+	  onClick={() => this.props.jumpTo(move)}
+	  className={(move === this.props.selectedMove) ? "selected" : null}
+        >{desc}</button>
       </li>
     );
   });
@@ -77,6 +79,7 @@ class Game extends React.Component {
 	).fill(null),
 	lastLocation: null,
       }],
+      selectedMove: null,
       stepNumber: 0,
       xIsNext: true,
     };
@@ -103,6 +106,7 @@ class Game extends React.Component {
 
   jumpTo(step) {
     this.setState({
+      selectedMove: step,
       stepNumber: step,
       xIsNext: (step % 2) === 0,
     });
@@ -137,6 +141,7 @@ class Game extends React.Component {
 	  <MoveList
 	    history = {this.state.history}
 	    jumpTo = {(move) => this.jumpTo(move)}
+	    selectedMove = {this.state.selectedMove}
 	  />
 	</div>
       </div>
