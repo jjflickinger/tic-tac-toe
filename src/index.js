@@ -50,30 +50,28 @@ class Board extends React.Component {
   }
 }
 
-class MoveList extends React.Component {
-  render() {
-    const ascending = this.props.ascending;
-    const arr = this.props.history.map((step, move) => {
-      const desc = move ?
-      'Go to move #' + move + ' at ' + this.props.history[move].lastLocation:
-      'Go to game start';
-       return (
-         <li key={move}>
-           <button
-             onClick={() => this.props.jumpTo(move)}
-             className={(move === this.props.selectedMove) ? "selected" : null}
-            >
-            {desc}
-            </button>
-         </li>
-       );
-     }
-    );
-    if (ascending) {
-      return arr;
-    } else {
-      return arr.reverse();
-    }
+function MoveList(props) {
+  const ascending = props.ascending;
+  const arr = props.history.map((step, move) => {
+    const desc = move ?
+    'Go to move #' + move + ' at ' + props.history[move].lastLocation:
+    'Go to game start';
+     return (
+       <li key={move}>
+         <button
+           onClick={() => props.jumpTo(move)}
+           className={(move === props.selectedMove) ? "selected" : null}
+          >
+          {desc}
+          </button>
+       </li>
+     );
+   }
+  );
+  if (ascending) {
+    return arr;
+  } else {
+    return arr.reverse();
   }
 }
 
