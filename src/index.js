@@ -21,28 +21,31 @@ class Board extends React.Component {
   }
 
   createRow(start, numRows) {
-    let row=[]
+    let row=[];
     for (let j = start; j < (start+numRows); j++) {
-      row.push(this.createSquare(j))
+      row.push(this.createSquare(j));
     }
     return row;
   }
 
 
   createBoard(numRows) {
-    let board=[]
+    let board=[];
     for (let j = 0; j < numRows; j++) {
-      board.push(<div className="board-row">
-        {this.createRow(j*numRows, numRows)}
-      </div>)
+      board.push(
+        <div className="board-row">
+          {this.createRow(j*numRows, numRows)}
+        </div>
+      );
     }
     return board;
   }
 
   render() {
+    const numRows = Number.parseInt(this.props.numRows, 10);
     return (
       <div>
-        {this.createBoard(3)}
+        {this.createBoard(numRows)}
       </div>
     );
   }
@@ -53,7 +56,10 @@ class Game extends React.Component {
     super(props);
     this.state = {
       history: [{
-        squares: Array(9).fill(null),
+        squares: Array(
+	  (Number.parseInt(this.props.numRows, 10)) *
+	  (Number.parseInt(this.props.numRows, 10))
+	).fill(null),
 	lastLocation: null,
       }],
       stepNumber: 0,
@@ -65,7 +71,8 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares, 3) || squares[i]) {
+    const numRows = Number.parseInt(this.props.numRows);
+    if (calculateWinner(squares, numRows) || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -89,7 +96,8 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares, 3);
+    const numRows = Number.parseInt(this.props.numRows, 10);
+    const winner = calculateWinner(current.squares, numRows);
 
     const moves = history.map((step, move) => {
       const desc = move ?
@@ -113,7 +121,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board
-	    numRows = '3'
+	    numRows = {numRows}
 	    squares={current.squares}
 	    onClick={(i) => this.handleClick(i)}
           />
@@ -130,7 +138,7 @@ class Game extends React.Component {
 // ========================================
 
 ReactDOM.render(
-  <Game numRows='3'/>,
+  <Game numRows="3"/>,
   document.getElementById('root')
 );
 
