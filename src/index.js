@@ -28,6 +28,7 @@ class Board extends React.Component {
     return row;
   }
 
+
   createBoard(numRows) {
     let board=[]
     for (let j = 0; j < numRows; j++) {
@@ -64,7 +65,7 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares, 3) || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -112,6 +113,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board
+	    numRows = '3'
 	    squares={current.squares}
 	    onClick={(i) => this.handleClick(i)}
           />
@@ -128,12 +130,12 @@ class Game extends React.Component {
 // ========================================
 
 ReactDOM.render(
-  <Game />,
+  <Game numRows='3'/>,
   document.getElementById('root')
 );
 
 function calculateWinner(squares, numRows) {
-  var lines = [];
+  let lines = [];
 
   //calculate horizontal row wins
   for (let k = 0; k < numRows; k++) {
@@ -168,9 +170,20 @@ function calculateWinner(squares, numRows) {
 
   //check for winner
   for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+    let arr = [];
+    for (let h = 0; h < numRows; h++) {
+      arr.push( (lines[i])[h] );
+    }
+    if (!squares[arr[0]]) {
+      continue;
+    }
+    for (let g = 1; g <= numRows; g++) {
+      if (g === numRows) {
+        return squares[arr[0]];
+      }
+      if (squares[arr[0]] != squares[arr[g]]) {
+        break;
+      }
     }
   }
   return null;
