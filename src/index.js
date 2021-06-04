@@ -94,7 +94,9 @@ function ToggleButton(props) {
 
 function StatusBar(props) {
   let status;
-  if (props.winner) {
+  if (props.fullBoard) {
+    status = 'Draw';
+  } else if (props.winner) {
     status = 'Winner: ' + props.winner;
   } else {
     status = 'Next player: ' + (props.xIsNext ? 'X' : 'O');
@@ -119,6 +121,7 @@ class Game extends React.Component {
       ascending: true,
       winningArray: null,
       winner: null,
+      fullBoard: false,
     };
   }
 
@@ -130,9 +133,12 @@ class Game extends React.Component {
     const squares = current.squares.slice();
     if (squares[i]) return;
 
-    const numRows = Number.parseInt(this.props.numRows);
+    const numRows = Number.parseInt(this.props.numRows, 10);
 
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+
+    this.setState({ fullBoard: isBoardFull(squares) });
+
     this.setState({
       history: history.concat([{
         squares: squares,
@@ -186,6 +192,7 @@ class Game extends React.Component {
           <StatusBar
 	    winner={winner}
 	    xIsNext={this.state.xIsNext}
+	    fullBoard={this.state.fullBoard}
           />
 	</div>
         <div className="move-list">
@@ -276,8 +283,15 @@ function calculateWinningArray(squares, numRows) {
 
 function calculateWinner(squares, arr) {
   if (arr) {
-    return squares[arr[0]]
+    return squares[arr[0]];
   } else {
     return null;
   }
+}
+
+function isBoardFull(squares) {
+  for (let i = 0; i < squares.length; i++) {
+    if (!squares[i]) return false;
+  }
+  return true;
 }
