@@ -163,6 +163,8 @@ class Game extends React.Component {
       selectedMove: step,
       stepNumber: step,
       xIsNext: (step % 2) === 0,
+      winningArray: null,
+      winner: null,
     });
   }
 
