@@ -13,7 +13,8 @@ ol, ul {
   display: table;
 }
 
-.status {
+.status-bar {
+  background: #ff2d00;
   margin-bottom: 10px;
 }
 
@@ -36,6 +37,10 @@ ol, ul {
   outline: none;
 }
 
+.winning-square {
+  background: #aaa;
+}
+
 .kbd-navigation .square:focus {
   background: #ddd;
 }
@@ -50,9 +55,14 @@ ol, ul {
 }
 
 .move-list {
+  background: #00ff00;
   margin-left: 20px;
 }
 
 .selected {
   font-weight: bold;
+}
+
+.toggle-button {
+  background: #99ccff;
 }

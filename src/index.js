@@ -4,7 +4,10 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button
+      className={`square${props.winningSquare ? ' winning-square' : ''}`}
+      onClick={props.onClick}
+    >
       {props.letter}
     </button>
   );
@@ -16,6 +19,8 @@ class Board extends React.Component {
       <Square
         letter={this.props.squares[i]}
 	onClick={() => this.props.onClick(i)}
+	winningSquare={(this.props.winningArray) ?
+          this.props.winningArray.includes(i) : null}
       />
     );
   }
@@ -112,17 +117,21 @@ class Game extends React.Component {
       stepNumber: 0,
       xIsNext: true,
       ascending: true,
+      winningArray: null,
+      winner: null,
     };
   }
 
   handleClick(i) {
+    if (this.state.winner) return;
+
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
+    if (squares[i]) return;
+
     const numRows = Number.parseInt(this.props.numRows);
-    if (calculateWinner(squares, numRows) || squares[i]) {
-      return;
-    }
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([{
@@ -132,6 +141,15 @@ class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
+
+    let winningArray = calculateWinningArray(squares, numRows);
+    if (winningArray) {
+      this.setState({
+        winningArray: winningArray,
+        winner: calculateWinner(squares, winningArray),
+      });
+      return;
+    }
   }
 
   jumpTo(step) {
@@ -152,7 +170,7 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const numRows = Number.parseInt(this.props.numRows, 10);
-    const winner = calculateWinner(current.squares, numRows);
+    const winner = calculateWinner(current.squares, calculateWinningArray(current.squares, numRows));
 
     return (
       <div className="game">
@@ -161,9 +179,10 @@ class Game extends React.Component {
 	    numRows={numRows}
 	    squares={current.squares}
 	    onClick={(i) => this.handleClick(i)}
+	    winningArray={this.state.winningArray}
           />
         </div>
-        <div className="game-info">
+        <div className="status-bar">
           <StatusBar
 	    winner={winner}
 	    xIsNext={this.state.xIsNext}
@@ -195,8 +214,8 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function calculateWinner(squares, numRows) {
-  let lines = [];
+function calculateWinningCombos(numRows) {
+  let winningCombos = [];
 
   //calculate horizontal row wins
   for (let k = 0; k < numRows; k++) {
@@ -204,7 +223,7 @@ function calculateWinner(squares, numRows) {
     for (let j = k*numRows; j < (k*numRows + numRows); j++) {
       combo.push(j);
     }
-    lines.push(combo);
+    winningCombos.push(combo);
   }
 
   //calculate vertical column wins
@@ -213,7 +232,7 @@ function calculateWinner(squares, numRows) {
     for (let j = k; j < numRows*numRows; j += numRows) {
       combo.push(j);
     }
-    lines.push(combo);
+    winningCombos.push(combo);
   }
 
   //calculate diagonal wins
@@ -221,26 +240,31 @@ function calculateWinner(squares, numRows) {
   for ( let k=0; k < (numRows*numRows); k += (numRows + 1) ) {
     diagonal1.push(k);
   }
-  lines.push(diagonal1);
+  winningCombos.push(diagonal1);
 
   let diagonal2 = [];
   for ( let k=(numRows - 1); k < (numRows*numRows); k +=(numRows - 1) ) {
     diagonal2.push(k);
   }
-  lines.push(diagonal2);
+  winningCombos.push(diagonal2);
 
-  //check for winner
-  for (let i = 0; i < lines.length; i++) {
+  return winningCombos;
+}
+
+function calculateWinningArray(squares, numRows) {
+  let winningCombos = calculateWinningCombos(numRows);
+
+  for (let i = 0; i < winningCombos.length; i++) {
     let arr = [];
     for (let h = 0; h < numRows; h++) {
-      arr.push( (lines[i])[h] );
+      arr.push( (winningCombos[i])[h] );
     }
     if (!squares[arr[0]]) {
       continue;
     }
     for (let g = 1; g <= numRows; g++) {
       if (g === numRows) {
-        return squares[arr[0]];
+        return arr;
       }
       if (squares[arr[0]] != squares[arr[g]]) {
         break;
@@ -248,4 +272,12 @@ function calculateWinner(squares, numRows) {
     }
   }
   return null;
+}
+
+function calculateWinner(squares, arr) {
+  if (arr) {
+    return squares[arr[0]]
+  } else {
+    return null;
+  }
 }
