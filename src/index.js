@@ -65,7 +65,7 @@ function MoveList(props) {
        <li key={move}>
          <button
            onClick={() => props.jumpTo(move)}
-           className={(move === props.selectedMove) ? "selected" : null}
+           className={`move-button${(move === props.selectedMove) ? ' selected-move' : ''}`}
           >
           {desc}
           </button>
@@ -163,9 +163,14 @@ class Game extends React.Component {
       selectedMove: step,
       stepNumber: step,
       xIsNext: (step % 2) === 0,
-      winningArray: null,
-      winner: null,
     });
+    if (step < this.state.stepNumber) {
+      this.setState({
+        winningArray: null,
+        winner: null,
+        fullBoard: false,
+      });
+    }
   }
 
   handleToggle() {
@@ -182,6 +187,15 @@ class Game extends React.Component {
 
     return (
       <div className="game">
+
+        <div className="status-bar">
+          <StatusBar
+            winner={winner}
+            xIsNext={this.state.xIsNext}
+            fullBoard={this.state.fullBoard}
+          />
+        </div>
+
         <div className="game-board">
           <Board
 	    numRows={numRows}
@@ -190,27 +204,24 @@ class Game extends React.Component {
 	    winningArray={this.state.winningArray}
           />
         </div>
-        <div className="status-bar">
-          <StatusBar
-	    winner={winner}
-	    xIsNext={this.state.xIsNext}
-	    fullBoard={this.state.fullBoard}
-          />
+
+        <div className="move-list-container">
+	  <div className="toggle-button">
+	    <ToggleButton
+	      ascending = {this.state.ascending}
+	      handleToggle = {() => this.handleToggle()}
+	    />
+	  </div>
+	  <div className="move-list">
+	    <MoveList
+	      history = {this.state.history}
+	      jumpTo = {(move) => this.jumpTo(move)}
+	      selectedMove = {this.state.selectedMove}
+	      ascending = {this.state.ascending}
+	    />
+	  </div>
 	</div>
-        <div className="move-list">
-	  <MoveList
-	    history = {this.state.history}
-	    jumpTo = {(move) => this.jumpTo(move)}
-	    selectedMove = {this.state.selectedMove}
-	    ascending = {this.state.ascending}
-	  />
-	</div>
-	<div className="toggle-button">
-	  <ToggleButton
-	    ascending = {this.state.ascending}
-	    handleToggle = {() => this.handleToggle()}
-	  />
-        </div>
+
       </div>
     );
   }

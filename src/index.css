@@ -1,36 +1,36 @@
 body {
+  background: #663300;
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
 }
 
 ol, ul {
+  list-style: none;
   padding-left: 30px;
-}
-
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
 }
 
 .status-bar {
   background: #ff2d00;
-  margin-bottom: 10px;
+  border: 3px solid #999;
+  font-size: 35px;
+  margin: auto;
+  text-align: center;
+  width: 325px;
 }
 
 .square {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 24px;
+  font-size: 40px;
   font-weight: bold;
-  line-height: 34px;
-  height: 34px;
+  height: 60px;
+  line-height: 60px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 60px;
 }
 
 .square:focus {
@@ -41,28 +41,85 @@ ol, ul {
   background: #aaa;
 }
 
+.board-row {
+  content: "";
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-board {
+  background: #99ccff;
+}
+
+.move-list-container {
+  background: #ffcccc;
+  height: 250px;
+  text-align: center;
+}
+
+.move-list {
+  border: 3px solid #999;
+  display: inline-block;
+  height: 100%;
+  list-style: none;
+  width: 60%;
+}
+
+.move-button {
+  width: 150px;
+}
+
 .kbd-navigation .square:focus {
   background: #ddd;
 }
 
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
-}
-
-.move-list {
-  background: #00ff00;
-  margin-left: 20px;
-}
-
-.selected {
+.selected-move {
   font-weight: bold;
 }
 
-.toggle-button {
-  background: #99ccff;
+@media only screen and (max-width: 600px) {
+  .game-board {
+    margin-top: 25px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 25px;
+  }
+
+  .board-row {
+    clear: both;
+  }
+
+  .move-list-container {
+    margin-top: 25px;
+    width: 100%;
+  }
+
+  .move-list {
+    width: 40%;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 900px) {
+  .move-list-container {
+    margin: 0;
+  }
+
+  .move-list {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  .game-board {
+    float: left;
+    margin: 30px 0 30px;
+    width: 70%;
+  }
+
+  .move-list-container {
+    float: right;
+    margin: 30px 0 30px;
+    width: 30%;
+  }
 }
