@@ -94,10 +94,10 @@ function ToggleButton(props) {
 
 function StatusBar(props) {
   let status;
-  if (props.fullBoard) {
+  if (props.winner) {
+    status = 'Winner ' + props.winner;
+  } else if (props.fullBoard) {
     status = 'Draw';
-  } else if (props.winner) {
-    status = 'Winner: ' + props.winner;
   } else {
     status = 'Next player: ' + (props.xIsNext ? 'X' : 'O');
   }
