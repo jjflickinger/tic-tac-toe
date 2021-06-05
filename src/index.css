@@ -1,5 +1,5 @@
 body {
-  background: #663300;
+  background: #917000;
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
 }
@@ -9,7 +9,7 @@ ol, ul {
 }
 
 .status-bar {
-  background: #ff2d00;
+  background: #ddc164;
   border: 3px solid #999;
   font-size: 35px;
   margin: auto;
@@ -18,7 +18,7 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
+  background: #f0e8ca;
   border: 1px solid #999;
   float: left;
   font-size: 40px;
@@ -37,7 +37,8 @@ ol, ul {
 }
 
 .winning-square {
-  background: #aaa;
+  border: 2px solid #ff0000;
+  background: #faf6e0;
 }
 
 .board-row {
@@ -47,21 +48,18 @@ ol, ul {
   margin-right: auto;
 }
 
-.game-board {
-  background: #99ccff;
-}
-
 .move-list-container {
-  background: #ffcccc;
   height: 250px;
   text-align: center;
 }
 
 .move-list {
+  background: #DDC164;
   border: 3px solid #999;
   display: inline-block;
   height: 100%;
   list-style: none;
+  overflow-y: auto;
   width: 75%;
 }
 
