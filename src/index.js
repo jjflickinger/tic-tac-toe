@@ -59,7 +59,7 @@ function MoveList(props) {
   const ascending = props.ascending;
   const arr = props.history.map((step, move) => {
     const desc = move ?
-    'Go to move #' + move + ' at ' + props.history[move].lastLocation:
+    'Go to move #' + move + ' at (' + (props.history[move].lastLocation % props.numRows) + ', ' + parseInt(props.history[move].lastLocation / props.numRows) + ')':
     'Go to game start';
      return (
        <li key={move}>
@@ -218,6 +218,7 @@ class Game extends React.Component {
 	      jumpTo = {(move) => this.jumpTo(move)}
 	      selectedMove = {this.state.selectedMove}
 	      ascending = {this.state.ascending}
+	      numRows = {numRows}
 	    />
 	  </div>
 	</div>

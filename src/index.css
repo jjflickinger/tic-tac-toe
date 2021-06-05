@@ -5,7 +5,6 @@ body {
 }
 
 ol, ul {
-  list-style: none;
   padding-left: 30px;
 }
 
@@ -63,11 +62,11 @@ ol, ul {
   display: inline-block;
   height: 100%;
   list-style: none;
-  width: 60%;
+  width: 75%;
 }
 
 .move-button {
-  width: 150px;
+  width: 180px;
 }
 
 .kbd-navigation .square:focus {
@@ -96,7 +95,7 @@ ol, ul {
   }
 
   .move-list {
-    width: 40%;
+    width: 50%;
   }
 }
 
