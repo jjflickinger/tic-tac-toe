@@ -37,8 +37,8 @@ ol, ul {
 }
 
 .winning-square {
-  border: 2px solid #ff0000;
-  background: #faf6e0;
+  border: 2px solid #000000;
+  background: #c9b743;
 }
 
 .board-row {
