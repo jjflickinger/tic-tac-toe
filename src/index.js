@@ -5,7 +5,8 @@ import './index.css';
 function Square(props) {
   return (
     <button
-      className={`square${props.winningSquare ? ' winning-square' : ''}`}
+      #className={`square${props.winningSquare ? ' winning-square' : ''}`}
+      className="square"
       onClick={props.onClick}
     >
       {props.letter}
