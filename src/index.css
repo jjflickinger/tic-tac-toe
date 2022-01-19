@@ -21,15 +21,15 @@ ol, ul {
   background: #f0e8ca;
   border: 1px solid #999;
   float: left;
-  font-size: 40px;
+  font-size: 140px;
   font-weight: bold;
-  height: 60px;
-  line-height: 60px;
+  height: 160px;
+  line-height: 160px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 60px;
+  width: 160px;
 }
 
 .square:focus {
